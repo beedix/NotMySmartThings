@@ -1,0 +1,29 @@
+#!/bin/sh
+#
+# $FreeBSD: head/news/unifipresence/files/unifipresence.in 410708 2016-03-09 16:59:18Z feld $
+#
+# PROVIDE: unifipresence
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+#
+# Add the following lines to /etc/rc.conf
+# to enable this service:
+#
+# unifipresence_enable (bool):	Set to NO by default.
+#			Set it to YES to enable it.
+#
+# unifipresence_user:        The user account to run unifipresence as
+		
+. /etc/rc.subr
+		
+name=unifipresence
+rcvar=unifipresence_enable
+		
+load_rc_config ${name}
+		
+: ${unifipresence_enable:=NO}
+: ${unifipresence_user:=_unifipresence_user}
+		
+command=/usr/local/bin/screen
+command_args="-d -m -S _unifipresence /usr/local/bin/python2.7 /usr/local/unifipresence/unifipresence.py"
+run_rc_command "$1"
